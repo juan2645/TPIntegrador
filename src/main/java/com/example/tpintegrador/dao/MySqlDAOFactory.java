@@ -4,11 +4,10 @@ import java.sql.Connection;
 
 public class MySqlDAOFactory extends FactoryDAO {
 
-    public static final String DRIVER = "com.mysql.cj.jdbc.Driver";
-    public static final String URI = "jdbc:mysql://localHost:3306/db_ventas";
-    public static final String CONN;
-    public MySqlDAOFactory dbMySqlDao;
-    public static Connection createConnection();
+    private static MySqlDAOFactory instance;
+    private static MySQL_ClienteDAO cliente;
+    private MySqlDAOFactory() {
+    }
 
     public MySqlDAOFactory getInstance() {
         if (dbMySqlDao == null) {
@@ -20,5 +19,19 @@ public class MySqlDAOFactory extends FactoryDAO {
     public ClienteDAO getClienteDAO() {
         return new ClienteDAO();
     }
+
+
+
+
+    public static final String DRIVER = "com.mysql.cj.jdbc.Driver";
+    public static final String URI = "jdbc:mysql://localHost:3306/db_ventas";
+
+    public static final String CONN;
+    public MySqlDAOFactory dbMySqlDao;
+    public static Connection createConnection();
+
+
+
+
 
 }
