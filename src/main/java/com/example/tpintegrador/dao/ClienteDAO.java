@@ -13,20 +13,21 @@ import java.sql.SQLException;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class ClienteDAO implements DAO<Cliente> {
+public interface ClienteDAO {
+    public int insertar();
 
-    private Connection conn;
-
-    public ClienteDAO (Connection conn) {
-        this.conn = conn;
-    }
-    @Override
-    public void crearTabla() {
-        // SQL y Java (si o si dentro del DAO)
-    }
-
-    @Override
-    public void insertar(Cliente cliente) {
-
-    }
+//    private Connection conn;
+//
+//    public ClienteDAO (Connection conn) {
+//        this.conn = conn;
+//    }
+//    @Override
+//    public void crearTabla() {
+//        // SQL y Java (si o si dentro del DAO)
+//    }
+//
+//    @Override
+//    public void insertar(Cliente cliente) {
+//
+//    }
 }

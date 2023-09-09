@@ -17,15 +17,15 @@ public class MySqlDAOFactory extends FactoryDAO {
     private MySqlDAOFactory() {
     }
 
-    public void connect() throws Exception {
+    public static Connection connect() throws Exception {
         Connection connection = DriverManager.getConnection(URI, USER, PASS);
         Class.forName(DRIVER).getDeclaredConstructor().newInstance();
-        this.conn = connection;
+        return connection;
     }
 
-    public Connection conn() {
-        return conn;
-    }
+//    public Connection conn() {
+//        return conn;
+//    }
 
     public static MySqlDAOFactory getInstance() {
         if (dbMySqlDao == null) {
@@ -34,19 +34,18 @@ public class MySqlDAOFactory extends FactoryDAO {
         return dbMySqlDao;
     }
 
-    public ClienteDAO getClienteDAO() {
-        return new ClienteDAO(conn);
+//    public ClienteDAO getClienteDAO() {
+//        return new MySQL_ClienteDAO();
+//    }
+
+
+
+    public DAO<?> getFactoryDAO(String fileCSV) throws Exception {
+        switch (fileCSV){
+            case "clientes.csv":
+//                return new ClienteDAO(fileCSV, conn);
+                return null;
+        }
+        return null;
     }
-
-
-
-
-
-
-
-
-
-
-
-
 }
