@@ -4,8 +4,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 public interface DAO<T> {
-        void crearTabla();
-
+        void crearTabla() throws SQLException;
         void insertar(T t) throws SQLException;
 }
 

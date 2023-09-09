@@ -7,23 +7,18 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import java.io.FileReader;
 import java.io.IOException;
 
 public class ClienteDAO implements DAO<Cliente> {
-    private CSVParser parser;
-    private Connection connection;
 
-    public ClienteDAO (String csv, Connection connection) {
-        try {
-            parser = CSVFormat.DEFAULT.withHeader().parse(new FileReader("productos.csv"));
-            connection = connection;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    private Connection conn;
 
+    public ClienteDAO (Connection conn) {
+        this.conn = conn;
     }
     @Override
     public void crearTabla() {
@@ -31,7 +26,7 @@ public class ClienteDAO implements DAO<Cliente> {
     }
 
     @Override
-    public void insertar(Cliente c) {
+    public void insertar(Cliente cliente) {
 
     }
 }
