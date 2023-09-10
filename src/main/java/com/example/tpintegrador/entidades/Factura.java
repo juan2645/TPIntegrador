@@ -8,4 +8,17 @@ public class Factura {
         this.idFactura = idFactura;
         this.idCliente = idCliente;
     }
+
+    public int getIdFactura() {
+        return idFactura;
+    }
+
+    public int getIdCliente() {
+        return idCliente;
+    }
+
+    @Override
+    public String toString() {
+        return "Factura [" +idFactura + ", idCliente [" + idCliente + "]";
+    }
 }
