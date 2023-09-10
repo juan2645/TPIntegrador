@@ -1,19 +1,24 @@
 package com.example.tpintegrador;
 
-import com.example.tpintegrador.dao.ClienteDAO;
-import com.example.tpintegrador.dao.DAO;
-import com.example.tpintegrador.dao.FactoryDAO;
-import com.example.tpintegrador.dao.MySqlDAOFactory;
-
-
+import com.example.tpintegrador.DAOMySQL.MySQL_ClienteDAO;
+import com.example.tpintegrador.DAOMySQL.MySqlDAOFactory;
+import com.example.tpintegrador.entidades.Cliente;
+import java.util.LinkedList;
 
 public class Main {
+    private static MySQL_ClienteDAO cliente_dao;
+
     public static void main(String[] args) throws Exception {
-        DAO dao1 = FactoryDAO.getFactoryDAO(1).getClienteDAO();
+
         MySqlDAOFactory mysql = MySqlDAOFactory.getInstance();
-        ClienteDAO daoCliente = mysql.getClienteDAO();
 
+        cliente_dao = new MySQL_ClienteDAO(mysql);
+        cliente_dao.crearTabla();
+        cliente_dao.leerCSV();
+
+        LinkedList<Cliente> clientes = cliente_dao.listar();
+        for (Cliente c : clientes) {
+            System.out.println(c);
+        }
     }
-
-
 }
