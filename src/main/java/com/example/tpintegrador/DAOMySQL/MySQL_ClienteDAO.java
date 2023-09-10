@@ -6,14 +6,17 @@ import java.io.FileReader;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
+
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.csv.CSVFormat;
 
 
 public class MySQL_ClienteDAO implements DAO<Cliente> {
-    private MySqlDAOFactory connectionMySQL;
+    private static MySqlDAOFactory connectionMySQL;
 
     public MySQL_ClienteDAO(MySqlDAOFactory connectionMySQL) {
         this.connectionMySQL = connectionMySQL;
@@ -71,5 +74,39 @@ public class MySQL_ClienteDAO implements DAO<Cliente> {
             System.out.println(e.getMessage());
         }
     }
+
+
+    public static List<Object[]> obtenerClientesQueMasCompraron() {
+        List<Object[]> resultados = new ArrayList<>();
+
+        String query = "SELECT c.idCliente, c.nombre, SUM(fp.cantidad * p.valor) AS compra_Total "
+                + "FROM cliente c "
+                + "JOIN factura f ON c.idCliente = f.idCliente "
+                + "JOIN factura_producto fp ON f.idFactura = fp.idFactura "
+                + "JOIN producto p ON fp.idProducto = p.idProducto "
+                + "GROUP BY c.idCliente, c.nombre "
+                + "ORDER BY compra_Total DESC";
+
+        try {
+            connectionMySQL.conectar();
+            PreparedStatement preparedStatement = connectionMySQL.conn().prepareStatement(query);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                int idCliente = rs.getInt("idCliente");
+                String nombreCliente = rs.getString("nombre");
+                double compraTotal = rs.getDouble("compra_Total");
+
+                Object[] resultado = {idCliente, nombreCliente, compraTotal};
+                resultados.add(resultado);
+            }
+            connectionMySQL.cerrar();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return resultados;
+    }
+
 
 }
