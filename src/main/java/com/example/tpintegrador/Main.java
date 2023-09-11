@@ -44,7 +44,10 @@ public class Main {
 
 
 
-        /* TRANSACCIONES CON LA CLASE FACTURA-PRODUCTO */
+     /* TRANSACCIONES CON LA CLASE FACTURA-PRODUCTO */
+        factura_producto_dao = new MySQL_Factura_ProductoDAO(mysql);
+        factura_producto_dao.crearTabla();
+        factura_producto_dao.leerCSV();
 
 
 
