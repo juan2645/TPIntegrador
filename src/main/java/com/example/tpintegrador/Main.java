@@ -14,6 +14,8 @@ import java.util.List;
 public class Main {
     private static MySQL_ClienteDAO cliente_dao;
     private static MySQL_FacturaDAO factura_dao;
+    private static MySQL_ProductoDAO producto_dao;
+
     public static void main(String[] args) throws Exception {
 
         MySqlDAOFactory mysql = MySqlDAOFactory.getInstance();
@@ -42,6 +44,14 @@ public class Main {
 
         /* TRANSACCIONES CON LA CLASE PRODUCTO */
 
+        producto_dao = new MySQL_FacturaDAO(mysql);
+        producto_dao.crearTabla();
+        producto_dao.leerCSV();
+
+        LinkedList<Producto> producto = producto_dao.listar();
+        for (Producto p : producto) {
+            System.out.println(p);
+        }
 
 
      /* TRANSACCIONES CON LA CLASE FACTURA-PRODUCTO */

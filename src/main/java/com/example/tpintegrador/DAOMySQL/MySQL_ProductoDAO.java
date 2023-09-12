@@ -4,10 +4,62 @@ import com.example.tpintegrador.entidades.Producto;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-
 public class MySQL_ProductoDAO {
     private static MySqlDAOFactory connectionMySQL;
 
+    @Override
+    public void crearTabla() throws Exception {
+        connectionMySQL.conectar();
+        String query = "CREATE TABLE -Producto(idProducto INT, nombre VARCHAR(500), valor float, PRIMARY KEY(idProducto))";
+        PreparedStatement prepareStatement = connectionMySQL.conn().prepareStatement(query);
+        prepareStatement.execute();
+        connectionMySQL.cerrar();
+    }
+    
+    @Override
+    public void insertar(Producto producto) throws Exception {
+        try {
+            connectionMySQL.conectar();
+            String insertSQL = "INSERT INTO Producto (idPrducto, nombre, valor) VALUES (?, ?, ?)";
+            PreparedStatement preparedStatement = connectionMySQL.conn().prepareStatement(insertSQL);
+            preparedStatement.setInt(1, producto.getIdProducto());
+            preparedStatement.setString(2, producto.getNombre());
+            preparedStatement.setString(3, cliente.getValor());
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @Override
+    public LinkedList<Producto> listar() throws Exception {
+        LinkedList<Producto> solucion = new LinkedList<>();
+        connectionMySQL.conectar();
+        PreparedStatement ps = connectionMySQL.conn().prepareStatement("SELECT * FROM Producto");
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()){
+            Producto Producto_lista = new Producto(rs.getInt(1),rs.getString(2), rs.getFloat(3));
+            solucion.add(producto_lista);
+        }
+        connectionMySQL.cerrar();
+        return solucion;
+    }
+    
+    public void leerCSV(){
+        try {
+            CSVParser parser = CSVFormat.DEFAULT.withHeader().parse(new
+                    FileReader("src/main/java/com/example/tpintegrador/csvs/productos.csv"));
+            for(CSVRecord row: parser) {
+                int idP = Integer.parseInt(row.get("idProducto"));
+                Producto producto = new Producto(idP,row.get("nombre"),row.get("valor"));
+                insertar(producto);
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+        
     public static Producto obtenerProductoMasVendido() throws Exception {
         String query = "SELECT p.idProducto, p.nombre, p.valor, SUM(fp.cantidad * p.valor) AS venta " +
                 "FROM producto p " +
@@ -43,7 +95,5 @@ public class MySQL_ProductoDAO {
         }
         return null;
     }
-
-
-
 }
+
