@@ -25,11 +25,12 @@ public class MySQL_Factura_ProductoDAO implements DAO<Factura_Producto> {
     @Override
     public void crearTabla() throws Exception {
         connectionMySQL.conectar();
-        String query = "CREATE TABLE Factura_Producto"
-                + "(idFactura INT,"
+        String query = "CREATE TABLE Factura_Producto ("
+                + "idFactura INT,"
                 + "idProducto INT,"
-                + "cantidad INT,)";
-        // +"PRIMARY KEY(idFactura, idProducto))";
+                + "cantidad INT,"
+                + "PRIMARY KEY (idProducto, idFactura)"
+                + ")";
         PreparedStatement prepareStatement = connectionMySQL.conn().prepareStatement(query);
         prepareStatement.execute();
         createRelationFacturaProductoFactura(connectionMySQL.conn());
@@ -37,23 +38,25 @@ public class MySQL_Factura_ProductoDAO implements DAO<Factura_Producto> {
         connectionMySQL.cerrar();
     }
 
+
     public void createRelationFacturaProductoFactura(Connection connection) throws Exception {
-        String query = "ALTER TABLE Factura_Producto"
-                + "ADD CONSTRAINT FK_Factura_Producto_Factura"
-                + "FOREIGN KEY (idFactura)"
+        String query = "ALTER TABLE Factura_Producto "
+                + "ADD CONSTRAINT FK_Factura_Producto_Factura "
+                + "FOREIGN KEY (idFactura) "
                 + "REFERENCES Factura(idFactura)";
         connection.prepareStatement(query).execute();
-        connection.commit();
+ //       connection.commit();
     }
 
     public void createRelationFacturaProductoProducto(Connection connection) throws Exception {
-        String query = "ALTER TABLE Factura_Producto"
-                + "ADD CONSTRAINT FK_Factura_Producto_Producto"
-                + "FOREIGN KEY (idProducto)"
+        String query = "ALTER TABLE Factura_Producto "
+                + "ADD CONSTRAINT FK_Factura_Producto_Producto "
+                + "FOREIGN KEY (idProducto) "
                 + "REFERENCES Producto(idProducto)";
         connection.prepareStatement(query).execute();
-        connection.commit();
+    //    connection.commit();
     }
+
 
     @Override
     public void insertar(Factura_Producto t) throws Exception {
@@ -65,7 +68,8 @@ public class MySQL_Factura_ProductoDAO implements DAO<Factura_Producto> {
             preparedStatement.setInt(2, t.getIdProducto());
             preparedStatement.setInt(3, t.getCantidad());
             preparedStatement.executeUpdate();
-            preparedStatement.close();
+            //preparedStatement.close();
+            connectionMySQL.cerrar();
         } catch (Exception e) {
 
         }
@@ -82,7 +86,7 @@ public class MySQL_Factura_ProductoDAO implements DAO<Factura_Producto> {
             Factura_Producto factura_producto_lista = new Factura_Producto(rs.getInt(1), rs.getInt(2), rs.getInt(3));
             solucion.add(factura_producto_lista);
         }
-
+        connectionMySQL.cerrar();
         return solucion;
     }
 
@@ -90,7 +94,7 @@ public class MySQL_Factura_ProductoDAO implements DAO<Factura_Producto> {
     public void leerCSV() {
         try {
             CSVParser parser = CSVFormat.DEFAULT.withHeader()
-                    .parse(new FileReader("src/main/java/com/example/tpintegrador/csvs/factura_producto.csv"));
+                    .parse(new FileReader("src/main/java/com/example/tpintegrador/csvs/facturas-productos.csv"));
             for (CSVRecord row : parser) {
                 int idFactura = Integer.parseInt(row.get("idFactura"));
                 int idProducto = Integer.parseInt(row.get("idProducto"));

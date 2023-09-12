@@ -2,29 +2,40 @@ package com.example.tpintegrador.DAOMySQL;
 
 import com.example.tpintegrador.entidades.Producto;
 import java.sql.PreparedStatement;
+import java.io.FileReader;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.LinkedList;
+
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.csv.CSVFormat;
 
 public class MySQL_ProductoDAO {
     private static MySqlDAOFactory connectionMySQL;
 
-    @Override
+    public MySQL_ProductoDAO(MySqlDAOFactory connectionMySQL) {
+        this.connectionMySQL = connectionMySQL;
+    }
+
+    //@Override
     public void crearTabla() throws Exception {
         connectionMySQL.conectar();
-        String query = "CREATE TABLE -Producto(idProducto INT, nombre VARCHAR(500), valor float, PRIMARY KEY(idProducto))";
+        String query = "CREATE TABLE Producto(idProducto INT, nombre VARCHAR(500), valor float, PRIMARY KEY(idProducto))";
         PreparedStatement prepareStatement = connectionMySQL.conn().prepareStatement(query);
         prepareStatement.execute();
         connectionMySQL.cerrar();
     }
     
-    @Override
+    //@Override
     public void insertar(Producto producto) throws Exception {
         try {
             connectionMySQL.conectar();
-            String insertSQL = "INSERT INTO Producto (idPrducto, nombre, valor) VALUES (?, ?, ?)";
+            String insertSQL = "INSERT INTO Producto (idProducto, nombre, valor) VALUES (?, ?, ?)";
             PreparedStatement preparedStatement = connectionMySQL.conn().prepareStatement(insertSQL);
             preparedStatement.setInt(1, producto.getIdProducto());
             preparedStatement.setString(2, producto.getNombre());
-            preparedStatement.setString(3, cliente.getValor());
+            preparedStatement.setFloat(3, producto.getValor());
             preparedStatement.executeUpdate();
             preparedStatement.close();
         } catch (SQLException e) {
@@ -32,14 +43,14 @@ public class MySQL_ProductoDAO {
         }
     }
     
-    @Override
+   // @Override
     public LinkedList<Producto> listar() throws Exception {
         LinkedList<Producto> solucion = new LinkedList<>();
         connectionMySQL.conectar();
         PreparedStatement ps = connectionMySQL.conn().prepareStatement("SELECT * FROM Producto");
         ResultSet rs = ps.executeQuery();
         while (rs.next()){
-            Producto Producto_lista = new Producto(rs.getInt(1),rs.getString(2), rs.getFloat(3));
+            Producto producto_lista = new Producto(rs.getInt(1),rs.getString(2), rs.getFloat(3));
             solucion.add(producto_lista);
         }
         connectionMySQL.cerrar();
@@ -52,7 +63,7 @@ public class MySQL_ProductoDAO {
                     FileReader("src/main/java/com/example/tpintegrador/csvs/productos.csv"));
             for(CSVRecord row: parser) {
                 int idP = Integer.parseInt(row.get("idProducto"));
-                Producto producto = new Producto(idP,row.get("nombre"),row.get("valor"));
+                Producto producto = new Producto(idP, row.get("nombre"), Float.parseFloat((row.get("valor"))));
                 insertar(producto);
             }
         }catch (Exception e){
@@ -80,6 +91,8 @@ public class MySQL_ProductoDAO {
                 double venta = rs.getDouble("venta");
                 float valor = rs.getFloat("valor");
                 Producto producto = new Producto(idProducto, nombreProducto, valor);
+                System.out.println("PRODUCTO MAS VENDIDO:");
+                System.out.println("Venta: " + venta);
                 return producto;
             } else {
                 return null;

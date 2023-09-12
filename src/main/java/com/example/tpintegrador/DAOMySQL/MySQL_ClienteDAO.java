@@ -41,7 +41,8 @@ public class MySQL_ClienteDAO implements DAO<Cliente> {
             preparedStatement.setString(2, cliente.getNombre());
             preparedStatement.setString(3, cliente.getEmail());
             preparedStatement.executeUpdate();
-            preparedStatement.close();
+            //preparedStatement.close();
+            connectionMySQL.cerrar();
         } catch (SQLException e) {
             e.printStackTrace();
         }
