@@ -10,7 +10,7 @@ public class MySqlDAOFactory extends FactoryDAO {
     private MySqlDAOFactory c;
     public static MySqlDAOFactory dbMySqlDao;
     public static final String DRIVER = "com.mysql.cj.jdbc.Driver";
-    public static final String URI = "jdbc:mysql://localHost:3306/integrador";
+    public static final String URI = "jdbc:mysql://localHost:3306/integrador1";
     public static final String USER = "root";
     public static final String PASS = "";
 
