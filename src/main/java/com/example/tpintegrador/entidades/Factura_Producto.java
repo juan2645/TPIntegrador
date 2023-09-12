@@ -15,14 +15,18 @@ public class Factura_Producto {
         return idFactura;
     }
 
+<<<<<<< HEAD
     public void setIdFactura(int idFactura) {
         this.idFactura = idFactura;
     }
 
+=======
+>>>>>>> 6cb343ef7878ca2a31b02f6235269da958017b58
     public int getIdProducto() {
         return idProducto;
     }
 
+<<<<<<< HEAD
     public void setIdProducto(int idProducto) {
         this.idProducto = idProducto;
     }
@@ -39,4 +43,9 @@ public class Factura_Producto {
     public String toString() {
         return "Factura [" + idFactura + ", producto = " + idProducto + ", cantidad = " + cantidad + "]";
     }
+=======
+    public int getCantidad() {
+        return cantidad;
+    }
+>>>>>>> 6cb343ef7878ca2a31b02f6235269da958017b58
 }
