@@ -45,7 +45,6 @@ public class MySQL_Factura_ProductoDAO implements DAO<Factura_Producto> {
                 + "FOREIGN KEY (idFactura) "
                 + "REFERENCES Factura(idFactura)";
         connection.prepareStatement(query).execute();
- //       connection.commit();
     }
 
     public void createRelationFacturaProductoProducto(Connection connection) throws Exception {
@@ -54,7 +53,6 @@ public class MySQL_Factura_ProductoDAO implements DAO<Factura_Producto> {
                 + "FOREIGN KEY (idProducto) "
                 + "REFERENCES Producto(idProducto)";
         connection.prepareStatement(query).execute();
-    //    connection.commit();
     }
 
 
@@ -68,7 +66,6 @@ public class MySQL_Factura_ProductoDAO implements DAO<Factura_Producto> {
             preparedStatement.setInt(2, t.getIdProducto());
             preparedStatement.setInt(3, t.getCantidad());
             preparedStatement.executeUpdate();
-            //preparedStatement.close();
             connectionMySQL.cerrar();
         } catch (Exception e) {
 
@@ -104,7 +101,6 @@ public class MySQL_Factura_ProductoDAO implements DAO<Factura_Producto> {
             }
         } catch (Exception e) {
 
-            // TODO: handle exception
         }
 
     }
