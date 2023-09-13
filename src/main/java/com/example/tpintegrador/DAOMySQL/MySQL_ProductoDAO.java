@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.io.FileReader;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -70,8 +72,8 @@ public class MySQL_ProductoDAO {
             System.out.println(e.getMessage());
         }
     }
-        
-    public static Producto obtenerProductoMasVendido() throws Exception {
+
+    public static Map<String, Object> obtenerProductoMasVendido() throws Exception {
         String query = "SELECT p.idProducto, p.nombre, p.valor, SUM(fp.cantidad * p.valor) AS venta " +
                 "FROM producto p " +
                 "JOIN factura_producto fp ON p.idProducto = fp.idProducto " +
@@ -91,9 +93,12 @@ public class MySQL_ProductoDAO {
                 double venta = rs.getDouble("venta");
                 float valor = rs.getFloat("valor");
                 Producto producto = new Producto(idProducto, nombreProducto, valor);
-                System.out.println("PRODUCTO MAS VENDIDO:");
-                System.out.println("Venta: " + venta);
-                return producto;
+
+                Map<String, Object> resultado = new HashMap<>();
+                resultado.put("producto", producto);
+                resultado.put("venta", venta);
+
+                return resultado;
             } else {
                 return null;
             }
@@ -108,5 +113,6 @@ public class MySQL_ProductoDAO {
         }
         return null;
     }
+
 }
 

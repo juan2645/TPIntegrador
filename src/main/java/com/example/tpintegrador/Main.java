@@ -15,6 +15,9 @@ import java.sql.DriverManager;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+
+import static com.example.tpintegrador.DAOMySQL.MySQL_ProductoDAO.obtenerProductoMasVendido;
 
 public class Main {
     private static MySQL_ClienteDAO cliente_dao;
@@ -53,14 +56,16 @@ public class Main {
 
         System.out.println(" ");
 
-        Producto pmv = MySQL_ProductoDAO.obtenerProductoMasVendido();
+        System.out.println("PRODUCTO MAS VENDIDO:");
+        Map<String, Object> resultadoProductoMasVendido = obtenerProductoMasVendido();
+        if (resultadoProductoMasVendido != null) {
+            Producto productoMasVendido = (Producto) resultadoProductoMasVendido.get("producto");
+            double ventaMasVendida = (double) resultadoProductoMasVendido.get("venta");
 
-        if (pmv != null) {
-          //  System.out.println("PRODUCTO MAS VENDIDO:");
-            System.out.println("Id: " + pmv.getIdProducto());
-            System.out.println("Nombre: " + pmv.getNombre());
+            System.out.println("Nombre: " + productoMasVendido.getNombre());
+            System.out.println("Venta: " + ventaMasVendida);
         } else {
-            System.out.println("No existen productos registrados.");
+            System.out.println("No se encontró ningún producto más vendido.");
         }
 
 
