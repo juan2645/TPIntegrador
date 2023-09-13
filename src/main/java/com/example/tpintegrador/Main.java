@@ -10,6 +10,9 @@ import com.example.tpintegrador.entidades.Factura;
 import com.example.tpintegrador.entidades.Producto;
 import com.example.tpintegrador.entidades.Factura_Producto;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -68,15 +71,13 @@ public class Main {
         System.out.println("LISTADO DE CLIENTES CON MAYORES COMPRAS:");
         List<Object[]> resultados = MySQL_ClienteDAO.obtenerClientesQueMasCompraron();
 
-        System.out.println("ID\t NOMBRE\t\t\t\t COMPRA");
+        System.out.printf("%-5s %-30s %10s%n", "ID", "NOMBRE", "COMPRA");
         for (Object[] resultado : resultados) {
             int idCliente = (int) resultado[0];
             String nombreCliente = (String) resultado[1];
             double compraTotal = (double) resultado[2];
-            System.out.println(idCliente + "\t" + nombreCliente + "\t\t\t" + compraTotal);
+            System.out.printf("%-5d %-30s %10.2f%n", idCliente, nombreCliente, compraTotal);
         }
-
-
-
     }
+
 }
