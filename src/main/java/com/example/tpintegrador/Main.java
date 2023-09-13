@@ -29,21 +29,11 @@ public class Main {
         cliente_dao.crearTabla();
         cliente_dao.leerCSV();
 
-        LinkedList<Cliente> clientes = cliente_dao.listar();
-        for (Cliente c : clientes) {
-            System.out.println(c);
-        }
-
         /* TRANSACCIONES CON LA CLASE FACTURA */
 
         factura_dao = new MySQL_FacturaDAO(mysql);
         factura_dao.crearTabla();
         factura_dao.leerCSV();
-
-        LinkedList<Factura> facturas = factura_dao.listar();
-        for (Factura f : facturas) {
-            System.out.println(f);
-        }
 
         /* TRANSACCIONES CON LA CLASE PRODUCTO */
 
@@ -51,28 +41,15 @@ public class Main {
         producto_dao.crearTabla();
         producto_dao.leerCSV();
 
-        LinkedList<Producto> productos = producto_dao.listar();
-        for (Producto p : productos) {
-            System.out.println(p);
-        }
-
-
      /* TRANSACCIONES CON LA CLASE FACTURA-PRODUCTO */
         factura_producto_dao = new MySQL_Factura_ProductoDAO(mysql);
         factura_producto_dao.crearTabla();
         factura_producto_dao.leerCSV();
 
-        LinkedList<Factura_Producto> facturaProductos = factura_producto_dao.listar();
-        for (Factura_Producto fp : facturaProductos) {
-            System.out.println(fp);
-        }
-
-
     /* RETORNA EL PRODUCTO CON MAYOR RECAUDACION */
 
         System.out.println(" ");
 
-       // MySQL_ProductoDAO productoDAO = new MySQL_ProductoDAO();
         Producto pmv = MySQL_ProductoDAO.obtenerProductoMasVendido();
 
         if (pmv != null) {
@@ -91,12 +68,12 @@ public class Main {
         System.out.println("LISTADO DE CLIENTES CON MAYORES COMPRAS:");
         List<Object[]> resultados = MySQL_ClienteDAO.obtenerClientesQueMasCompraron();
 
+        System.out.println("ID\t NOMBRE\t\t\t\t COMPRA");
         for (Object[] resultado : resultados) {
             int idCliente = (int) resultado[0];
             String nombreCliente = (String) resultado[1];
             double compraTotal = (double) resultado[2];
-
-            System.out.println("Id: " + idCliente + ", Nombre: " + nombreCliente + ", Compras : $" + compraTotal);
+            System.out.println(idCliente + "\t" + nombreCliente + "\t\t\t" + compraTotal);
         }
 
 

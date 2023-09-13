@@ -2,6 +2,7 @@ package com.example.tpintegrador.DAOMySQL;
 
 import com.example.tpintegrador.DAOInterface.DAO;
 import java.io.FileReader;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,6 +27,7 @@ public class MySQL_FacturaDAO implements DAO<Factura> {
         String query = "CREATE TABLE Factura(idFactura INT, idCliente INT, PRIMARY KEY(idFactura))";
         PreparedStatement prepareStatement = connectionMySQL.conn().prepareStatement(query);
         prepareStatement.execute();
+        createRelationFacturaCliente(connectionMySQL.conn());
         connectionMySQL.cerrar();
     }
 
@@ -72,6 +74,14 @@ public class MySQL_FacturaDAO implements DAO<Factura> {
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
+    }
+
+    public void createRelationFacturaCliente(Connection connection) throws Exception {
+        String query = "ALTER TABLE Factura "
+                + "ADD CONSTRAINT FK_cliente_factura "
+                + "FOREIGN KEY (idCliente) "
+                + "REFERENCES Cliente(idCliente)";
+        connection.prepareStatement(query).execute();
     }
 
 }

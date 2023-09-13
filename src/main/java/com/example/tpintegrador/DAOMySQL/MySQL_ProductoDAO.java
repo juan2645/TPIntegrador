@@ -37,7 +37,7 @@ public class MySQL_ProductoDAO {
             preparedStatement.setString(2, producto.getNombre());
             preparedStatement.setFloat(3, producto.getValor());
             preparedStatement.executeUpdate();
-            preparedStatement.close();
+            connectionMySQL.cerrar();
         } catch (SQLException e) {
             e.printStackTrace();
         }
